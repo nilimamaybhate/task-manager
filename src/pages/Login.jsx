@@ -1,37 +1,56 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import Input from "../components/Input";
+import { loginUser } from "../api/authApi";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    navigate("/dashboard");
+  }
+}, []);
+
+
+
+  const handleSubmit = async (e) => {
   e.preventDefault();
 
-  setError("");
+  try {
+   const data = await loginUser(
+  email,
+  password
+);
 
-  if(!email.trim()) {
-    setError("Email is required");
-    return;
+console.log(data);
+
+localStorage.setItem("token", data.token);
+
+localStorage.setItem(
+  "user",
+  JSON.stringify(data.user)
+);
+
+navigate("/dashboard");
+
+  } catch (error) {
+    setError(
+      error.response?.data?.message ||
+      "Login failed"
+    );
   }
-
-  if(!password.trim()) {
-    setError("password is required");
-    return;
-  }
-
-  if (!emailRegex.test(email)) {
-  setError("Please enter a valid email");
-  return;
-}
-
-  console.log("Email:", email);
-  console.log("Password:", password);
 };
 
   return (
@@ -83,11 +102,6 @@ function Login() {
   </Link>
 </p>
         </form>
-        <p>
-            email:{email}
-            <br />
-            password:{password}
-        </p>
       </div>
     </div>
   );
