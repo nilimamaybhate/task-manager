@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/api/auth";
+const API_URL = "https://task-manager-api-8mn1.onrender.com/api/auth";
 
 export const loginUser = async (email, password) => {
   const response = await axios.post(

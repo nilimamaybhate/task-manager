@@ -128,7 +128,7 @@ function Dashboard() {
   const fetchTasks = async (token) => {
     try {
       if (!token) token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/tasks", { headers: { Authorization: token } });
+      const res = await axios.get("https://task-manager-api-8mn1.onrender.com/api/tasks", { headers: { Authorization: token } });
       setTasks(res.data);
     } catch (e) { console.log(e); }
   };
@@ -139,7 +139,7 @@ function Dashboard() {
     setAdding(true);
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.post("http://localhost:5000/api/tasks", { title }, { headers: { Authorization: token } });
+      const res = await axios.post("https://task-manager-api-8mn1.onrender.com/api/tasks", { title }, { headers: { Authorization: token } });
       setTasks([...tasks, res.data]);
       setTitle("");
     } catch (e) { console.log(e); }
@@ -149,7 +149,7 @@ function Dashboard() {
   const toggleTask = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.put(`http://localhost:5000/api/tasks/${id}`, {}, { headers: { Authorization: token } });
+      const res = await axios.put(`https://task-manager-api-8mn1.onrender.com/api/tasks/${id}`, {}, { headers: { Authorization: token } });
       setTasks(tasks.map((t) => (t._id === id ? res.data : t)));
     } catch (e) { console.log(e); }
   };
@@ -159,7 +159,7 @@ function Dashboard() {
     setTimeout(async () => {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:5000/api/tasks/${id}`, { headers: { Authorization: token } });
+        await axios.delete(`https://task-manager-api-8mn1.onrender.com/api/tasks/${id}`, { headers: { Authorization: token } });
         setTasks(tasks.filter((t) => t._id !== id));
       } catch (e) { console.log(e); }
       finally { setDeletingId(null); }
@@ -169,7 +169,7 @@ function Dashboard() {
   const editTask = async (id) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.put(`http://localhost:5000/api/tasks/edit/${id}`, { title: editTitle }, { headers: { Authorization: token } });
+      const res = await axios.put(`https://task-manager-api-8mn1.onrender.com/api/tasks/edit/${id}`, { title: editTitle }, { headers: { Authorization: token } });
       setTasks(tasks.map((t) => (t._id === id ? res.data : t)));
       setEditingId(null); setEditTitle("");
     } catch (e) { console.log(e); }
